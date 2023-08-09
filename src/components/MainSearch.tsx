@@ -1,9 +1,11 @@
 import useCustomTranslation from "@/hooks/useCustomTranslation"
+import useDebounce from "@/hooks/useDebounce"
+import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 import useMainStore from "@/zustand/main.slice"
 import clsx from "clsx"
 import { Button } from "primereact/button"
 import { InputText } from "primereact/inputtext"
-import { memo, useEffect } from "react"
+import { memo, useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
@@ -17,7 +19,15 @@ const MainSearch = (): JSX.Element => {
     const { query, setQuery } = useMainStore();
     const { handleSubmit, control, watch, setValue } = useForm<SearchForm>();
     const [searchParams, setSearchParams] = useSearchParams();
+    const [refElement, setRefElement] = useState<HTMLDivElement | null>(null)
+    const isIntersecting = useIntersectionObserver(null, refElement);
+    const debounce = useDebounce();
 
+    useEffect(() => {
+        debounce(() => {
+            console.log({isIntersecting})
+        })
+    }, [isIntersecting])
     useEffect(() => {
         setValue(QUERY_STRING, query);
         if(query) {
@@ -40,7 +50,9 @@ const MainSearch = (): JSX.Element => {
     }
 
     return (
-        <div className="flex flex-col items-center space-y-4">
+        <div
+            ref={r => setRefElement(r)}
+            className="flex flex-col items-center space-y-4">
             <span className="text-secondary text-3xl font-bold text-center tracking-wide animate-fadeup select-none">
                 {T('findTalent')}
             </span>
