@@ -7,6 +7,7 @@ import { memo, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 
+const QUERY_STRING = "query"
 type SearchForm = {
     query: string
 }
@@ -18,12 +19,12 @@ const MainSearch = (): JSX.Element => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        setValue('query', query);
+        setValue(QUERY_STRING, query);
         if(query) {
-            searchParams.set("query", query);
+            searchParams.set(QUERY_STRING, query);
         }
         else {
-            searchParams.delete("query");
+            searchParams.delete(QUERY_STRING);
         }
         setSearchParams(searchParams);
     }, [query])
@@ -47,7 +48,7 @@ const MainSearch = (): JSX.Element => {
                 className="flex items-center space-x-0 lg:space-x-2 space-y-2 lg:space-y-0 flex-col lg:flex-row"
                 onSubmit={handleSubmit(onSubmit)}>
                 <Controller
-                    name={"query"}
+                    name={QUERY_STRING}
                     control={control}
                     render={({ field }) => (
                         <span className={clsx(
@@ -62,7 +63,7 @@ const MainSearch = (): JSX.Element => {
                                 spellCheck={false}
                                 className="text-[16px] lg:text-[20px] px-5 lg:px-[1.5625rem] py-3 lg:py-[.9375rem] rounded-xl border-none shadow lg:min-w-[500px] min-w-0"/>
                             {
-                                watch('query') && 
+                                watch(QUERY_STRING) && 
                                 <i 
                                     onClick={() => handleClear()}
                                     className="pi pi-times px-3 cursor-pointer" />
@@ -73,14 +74,13 @@ const MainSearch = (): JSX.Element => {
 
                 <div>
                     <Button
-                        disabled={!Boolean(watch("query"))}
+                        disabled={!Boolean(watch(QUERY_STRING))}
                         className="rounded-xl animate-fadeleft text-[16px] lg:text-[20px] px-5 lg:px-[1.5625rem] py-3 lg:py-[.9375rem]">
                         {T('search')}
                     </Button>
                     
                 </div>
             </form>
-            
         </div>  
     )
 }

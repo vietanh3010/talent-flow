@@ -9,9 +9,9 @@ const MainLayout = (): JSX.Element => {
     return (
         <>
             {/* <GradientBackground/> */}
-            <section className="z-10 h-full w-full flex flex-col">
+            <section className="z-10 h-screen w-full flex flex-col">
                 <Header/>
-                <div className="w-full h-full p-0 lg:p-5">
+                <div className="w-full grow p-0 lg:p-5">
                     {outlet}
                 </div>
                 <ScrollTop />

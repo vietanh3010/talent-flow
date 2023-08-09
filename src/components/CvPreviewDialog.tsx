@@ -19,6 +19,7 @@ const CvPreviewDialog = ({
             className={clsx("h-[90vh] w-[90vw] lg:w-[50vw]")}
             contentClassName="!p-0"
             dismissableMask
+            draggable={false}
             onHide={onHide}>
             <div className="h-[calc(90vh-100px)]">
                 {

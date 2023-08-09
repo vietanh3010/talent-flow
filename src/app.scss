@@ -50,3 +50,7 @@ $height-scroll: 6px;
 }
 
 @include scroll-custom;
+
+.scroll-custom {
+    @include scroll-custom;
+}

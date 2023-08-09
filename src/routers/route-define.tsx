@@ -4,7 +4,8 @@ import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
 // pages
-const HomeModule = lazy(() => import('@/pages/Home'))
+const HomeModule = lazy(() => import('@/pages/Home'));
+const CurriculumVitaeModule = lazy(() => import('@/pages/CurriculumVitae'));
 //404
 const NotFoundModule = lazy(() => import('@/pages/NotFound'));
 
@@ -23,6 +24,10 @@ const routes: RouteExtends[] = [
             {
                 path: 'home',
                 element: <HomeModule/>,
+            },
+            {
+                path: 'cv',
+                element: <CurriculumVitaeModule/>,
             },
             {
                 path: '*',

@@ -43,10 +43,9 @@ const CvList = (): JSX.Element => {
 
     const template = (options: PanelHeaderTemplateOptions, data: DummyDataType) => {
     
-
         return (
             <div 
-                className={clsx("cursor-pointer",
+                className={clsx("cursor-pointer animate-fadeup",
                     options.className,
                     options.collapsed && "rounded-lg transition-all delay-300"
                 )} 
@@ -55,9 +54,13 @@ const CvList = (): JSX.Element => {
                     <div className="flex items-center space-x-5">
                         <div className="flex flex-col items-start">
                             <div className="flex items-center space-x-2">
-                                <span className="text-primary font-bold text-base mr-2">{data.full_name}</span>
+                                <span className="text-primary font-bold text-base mr-2 whitespace-nowrap">
+                                    {data.full_name}
+                                </span>
                                 <div className="flex justify-end items-center space-x-1">
-                                    <span className="text-secondary text-base font-medium">{data.score}</span>
+                                    <span className="text-secondary text-base font-medium">
+                                        {data.score}
+                                    </span>
                                     <i className="pi pi-star-fill pb-0.5 text-sm text-warning-7"></i>
                                 </div>
                             </div>
@@ -137,7 +140,7 @@ const CvList = (): JSX.Element => {
                         key={i}
                         headerTemplate={(opt) => template(opt, data)}
                         collapsed={true}
-                        toggleable >
+                        toggleable>
                         <div>
                             <span>{data.description}</span>
                         </div>
