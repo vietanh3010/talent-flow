@@ -10,5 +10,13 @@
     "filters": "lọc",
     "talentsFoundForKeyWord": "ứng viên được tìm thấy cho từ khóa",
     "tf_summary": "tóm tắt bản thân",
-    "thoughtAboutCandidate": "bạn nghĩ gì về ứng viên?"
+    "thoughtAboutCandidate": "bạn nghĩ gì về ứng viên?",
+    "noData": "không tìm thấy dữ liệu",
+    "enterYourComment": "nhập nhận xét của bạn",
+    "addComment": "thêm nhận xét",
+    "feedback": "nhận set",
+    "result": "kết quả",
+    "fail": "trượt",
+    "pass": "qua",
+    "submit": "gửi"
 }

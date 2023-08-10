@@ -10,5 +10,13 @@
     "filters": "filters",
     "talentsFoundForKeyWord": "talents found for keyword",
     "tf_summary": "self summary",
-    "thoughtAboutCandidate": "what do you think about this candidate?"
+    "thoughtAboutCandidate": "what do you think about this candidate?",
+    "noData": "no data",
+    "enterYourComment": "enter your comment",
+    "addComment": "add comment",
+    "feedback": "feedback",
+    "result": "result",
+    "fail": "fail",
+    "pass": "pass",
+    "submit": "submit"
 }

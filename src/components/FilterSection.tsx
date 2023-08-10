@@ -31,7 +31,6 @@ const FilterSection = (): JSX.Element => {
     const handleFormChange = () => {
         const formValues = getValues();
         debounce(() => {
-            console.log(formValues);
             const queriesStrings = Object.entries(formValues).reduce<string[]>((p, [kc,kv]) => {
                 if(kv) p.push(kc);
                 return p
@@ -70,9 +69,13 @@ const FilterSection = (): JSX.Element => {
                                                 render={({ field }) => 
                                                     <div className="flex align-items-center">
                                                         <Checkbox
-
                                                             inputId={`${k}-${item}`} 
                                                             {...field}
+                                                            inputRef={field.ref}
+                                                            onChange={(e) => {
+                                                                field.onChange(e.checked);
+                                                                handleFormChange()
+                                                            }}
                                                             checked={Boolean(field.value)}
                                                         />
                                                         <label htmlFor={`${k}-${item}`} className="ml-2 text-secondary text-sm font-medium">

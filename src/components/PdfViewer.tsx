@@ -21,7 +21,7 @@ const PdfViewer = ({
     
 
     return (
-        <div className="w-full h-[calc(100vh-235px)] relative">
+        <div className="w-full h-[calc(100vh-129px)] relative">
             {
                 url && 
                 <iframe

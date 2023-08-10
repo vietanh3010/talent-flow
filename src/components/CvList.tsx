@@ -9,6 +9,7 @@ import { Panel, PanelHeaderTemplateOptions } from "primereact/panel";
 import { Tag } from "primereact/tag";
 import { memo, useState } from "react";
 import CvPreviewDialog from "./CvPreviewDialog";
+import { Skeleton } from "primereact/skeleton";
 
 const DETAIL_FIELDS: Array<keyof ProfileResponse> = [
     'tf_summary',
@@ -17,19 +18,19 @@ const DETAIL_FIELDS: Array<keyof ProfileResponse> = [
 
 const CvList = (): JSX.Element => {
     const {T} = useCustomTranslation();
-    const [previewPdfLink, setPreviewPdfLink] = useState<string>("");
+    const [previewProfile, setpreviewProfile] = useState<ProfileResponse>();
     const { getCV } = useCvService();
     const { query } = useMainStore();
     const { filterStrings } = useMainStore();
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryFn: () => getCV([query, ...filterStrings]),
         queryKey: ["GET_CV", query, filterStrings],
     })
 
 
     const handleViewCV = (data: ProfileResponse) => {
-        setPreviewPdfLink(data.url)
+        setpreviewProfile(data)
     }
 
     // const handleDownloadCV = (data: ProfileResponse) => {
@@ -120,14 +121,38 @@ const CvList = (): JSX.Element => {
     };
     
     return (
-        <div className="w-full h-full rounded-md pt-5">
-            <span className="text-primary font-medium text-2xl">
-                {`${data?.length ?? 0} ${T('talentsFoundForKeyWord')}`} 
-                <span className="text-blue-500 px-1">{query}</span>
-            </span>
+        <div className="w-full h-full rounded-md">
+            <div className="py-2">
+                {
+                    isLoading ? 
+                    <Skeleton
+                        width="50%" 
+                        height="29px">
+                    </Skeleton>
+                    :
+                    <span className="text-primary font-medium text-2xl">
+                        {`${data?.length ?? 0} ${T('talentsFoundForKeyWord')}`} 
+                        <span className="text-blue-500 px-1">{query}</span>
+                    </span>
+                }
+            </div>
+
             <div className="grid grid-cols-1 gap-2">
             {
-                data?.map((data, i) => 
+                isLoading ? 
+                <>
+                    {
+                        Array(10).fill(0).map((_,i) =>
+                            <Skeleton
+                                key={i}
+                                width="100%" 
+                                height="74px"></Skeleton>
+                        )
+                    }
+                </>
+                :
+                data?.length ? 
+                data.map((data, i) => 
                     <Panel
                         key={i}
                         headerTemplate={(opt) => template(opt, data)}
@@ -164,11 +189,13 @@ const CvList = (): JSX.Element => {
                         </div>
                     </Panel>
                 )
+                :
+                <div>{T('noData')}</div>
             }
             </div>
             <CvPreviewDialog 
-                link={previewPdfLink}
-                onHide={() => setPreviewPdfLink("")}/>
+                profile={previewProfile}
+                onHide={() => setpreviewProfile(undefined)}/>
         </div>
     )
 }
