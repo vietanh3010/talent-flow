@@ -8,5 +8,7 @@
     "viewCV": "view CV",
     "downloadCV": "download CV",
     "filters": "filters",
-    "talentsFound": "talents found"
+    "talentsFoundForKeyWord": "talents found for keyword",
+    "tf_summary": "self summary",
+    "thoughtAboutCandidate": "what do you think about this candidate?"
 }

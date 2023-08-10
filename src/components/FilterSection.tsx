@@ -1,4 +1,6 @@
 import useCustomTranslation from "@/hooks/useCustomTranslation";
+import useDebounce from "@/hooks/useDebounce";
+import useMainStore from "@/zustand/main.slice";
 import { Checkbox } from "primereact/checkbox";
 import { memo } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,15 +19,27 @@ const FILTER_DEFINE = {
         "fresher",
         "intern"
     ],
-    "location": [
-        "hanoi",
-        "hochiminh"
-    ]
 }
 
 const FilterSection = (): JSX.Element => {
     const {T} = useCustomTranslation();
-    const { control } = useForm();
+    const { control, getValues} = useForm<Record<string, string | undefined>>();
+    const { setFilterStrings } = useMainStore();
+    const debounce = useDebounce();
+
+
+    const handleFormChange = () => {
+        const formValues = getValues();
+        debounce(() => {
+            console.log(formValues);
+            const queriesStrings = Object.entries(formValues).reduce<string[]>((p, [kc,kv]) => {
+                if(kv) p.push(kc);
+                return p
+            },[]);
+
+            setFilterStrings(queriesStrings)
+        })
+    }
 
     return (
         <div className="p-5 flex flex-col space-y-2 border border-solid border-gray-4 rounded-lg !sticky !top-20">
@@ -34,7 +48,9 @@ const FilterSection = (): JSX.Element => {
             </span>
             
             <div>
-                <form className="flex flex-col space-y-4 animate-faderight">
+                <form
+                    onChange={handleFormChange}
+                    className="flex flex-col space-y-4 animate-faderight">
                     {
                         Object.entries(FILTER_DEFINE).map(([k,v]) => 
                             <div 
@@ -57,7 +73,7 @@ const FilterSection = (): JSX.Element => {
 
                                                             inputId={`${k}-${item}`} 
                                                             {...field}
-                                                            checked={field.value}
+                                                            checked={Boolean(field.value)}
                                                         />
                                                         <label htmlFor={`${k}-${item}`} className="ml-2 text-secondary text-sm font-medium">
                                                             {item}

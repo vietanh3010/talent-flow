@@ -16,7 +16,7 @@ const CvPreviewDialog = ({
         <Dialog 
             header="CV" 
             visible={!!link} 
-            className={clsx("h-[90vh] w-[90vw] lg:w-[50vw]")}
+            className={clsx("h-[90vh] w-[90vw] lg:w-[70vw]")}
             contentClassName="!p-0"
             dismissableMask
             draggable={false}

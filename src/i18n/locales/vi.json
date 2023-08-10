@@ -8,5 +8,7 @@
     "viewCV": "xem CV",
     "downloadCV": "tải CV",
     "filters": "lọc",
-    "talentsFound": "ứng viên được tìm thấy"
+    "talentsFoundForKeyWord": "ứng viên được tìm thấy cho từ khóa",
+    "tf_summary": "tóm tắt bản thân",
+    "thoughtAboutCandidate": "bạn nghĩ gì về ứng viên?"
 }

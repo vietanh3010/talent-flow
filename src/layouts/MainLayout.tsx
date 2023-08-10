@@ -1,4 +1,3 @@
-import { ScrollTop } from "primereact/scrolltop";
 import { memo } from "react";
 import { useOutlet } from "react-router-dom";
 import Header from "./Header";
@@ -14,7 +13,6 @@ const MainLayout = (): JSX.Element => {
                 <div className="w-full grow p-0 lg:p-5">
                     {outlet}
                 </div>
-                <ScrollTop />
             </section>
         </>
     )

@@ -1,3 +1,4 @@
+import CvFeedback from "@/components/CvFeedback";
 import PdfViewer from "@/components/PdfViewer";
 import useCustomTranslation from "@/hooks/useCustomTranslation";
 import clsx from "clsx";
@@ -8,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 
 const QUERY_STRING = "url"
+const QUERY_FEEDBACK = "feedback"
 type CvForm = {
     url: string
 }
@@ -17,6 +19,7 @@ const CurriculumVitae = (): JSX.Element => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { handleSubmit, control, watch, setValue, formState: {errors} } = useForm<CvForm>();
     const [pdfUrl, setPdfUrl] = useState<string>("");
+    const [canFeedback, setCanFeedback] = useState<boolean>(false);
     useEffect(() => {
         const url = searchParams.get(QUERY_STRING) ?? "";
         if(!url) return;
@@ -29,7 +32,14 @@ const CurriculumVitae = (): JSX.Element => {
         return () => {
             window.clearTimeout(timeout)
         }
-    }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams, setValue])
+
+    useEffect(() => {
+        const feedbackQuery = searchParams.get(QUERY_FEEDBACK) ?? "";
+        setCanFeedback(feedbackQuery === "1");
+    }, [searchParams])
+    
 
     const onSubmit = (formValues: CvForm) => {
         const { url } = formValues;
@@ -49,7 +59,7 @@ const CurriculumVitae = (): JSX.Element => {
                     {T('viewCV')}
                 </span>
                 <form 
-                    className="flex items-center justify-center space-x-0 lg:space-x-2 space-y-2 lg:space-y-0 flex-col lg:flex-row w-full"
+                    className="flex flex-col items-center justify-center space-x-0 lg:space-x-2 space-y-2 lg:space-y-0 lg:flex-row w-full"
                     onSubmit={handleSubmit(onSubmit)}>
                     <Controller
                         name={QUERY_STRING}
@@ -99,7 +109,16 @@ const CurriculumVitae = (): JSX.Element => {
                     </div>
                 </form>
             </div>
-            <PdfViewer url={pdfUrl}/>
+
+            <div className="w-full h-full grid grid-cols-3 gap-5">
+                <div className={clsx(canFeedback ? "col-span-2" : "col-span-3")}>
+                    <PdfViewer url={pdfUrl}/>
+                </div>
+                { 
+                    canFeedback && 
+                    <CvFeedback/>
+                }
+            </div>
         </div>
     )
 }

@@ -1,4 +1,8 @@
 import useCustomTranslation from "@/hooks/useCustomTranslation";
+import useCvService from "@/service-hooks/useCv.service";
+import { ProfileResponse } from "@/types/response.type";
+import useMainStore from "@/zustand/main.slice";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Button } from "primereact/button";
 import { Panel, PanelHeaderTemplateOptions } from "primereact/panel";
@@ -6,38 +10,23 @@ import { Tag } from "primereact/tag";
 import { memo, useState } from "react";
 import CvPreviewDialog from "./CvPreviewDialog";
 
-type ProfileResponse = {
-    name: string,
-    city: string,
-    self_summary: string,
-    objective: string,
-    phone: string,
-    email: string,
-    skills: string[],
-    total_experience_in_year: string,
-    url: string,
-}
-const DUMMY_DATA: ProfileResponse = {
-    name: "Nguyễn Hải Đăng",
-    // score: "4.2",
-    city: "Ha Noi",
-    self_summary: "Phát triển trở thành leader sau 3 - 4 năm, mục tiêu dài hạn trở thành PM",
-    objective: "Phát triển trở thành leader sau 3 - 4 năm, mục tiêu dài hạn trở thành PM",
-    phone: "+84397485801",
-    email: "nguyenhaidark25072001@gmail.com",
-    skills: ['backend', 'frontend', 'javascript', 'softskills', 'python', 'fullstack', 'good looking'],
-    total_experience_in_year: "0.4",
-    url: "https://s3-sgn09.fptcloud.com/talent-flow/Nguy%E1%BB%85n%20H%E1%BA%A3i%20%C4%90%C4%83ng%20-%20FE.pdf",
-}
-
 const DETAIL_FIELDS: Array<keyof ProfileResponse> = [
-    'self_summary',
+    'tf_summary',
     'total_experience_in_year'
 ]
 
 const CvList = (): JSX.Element => {
     const {T} = useCustomTranslation();
     const [previewPdfLink, setPreviewPdfLink] = useState<string>("");
+    const { getCV } = useCvService();
+    const { query } = useMainStore();
+    const { filterStrings } = useMainStore();
+
+    const { data } = useQuery({
+        queryFn: () => getCV([query, ...filterStrings]),
+        queryKey: ["GET_CV", query, filterStrings],
+    })
+
 
     const handleViewCV = (data: ProfileResponse) => {
         setPreviewPdfLink(data.url)
@@ -73,29 +62,25 @@ const CvList = (): JSX.Element => {
                             <span className="text-secondary/80 font-medium text-sm">{data.email}</span>
                         </div>
 
-                        <div className="flex flex-wrap">
-                            {
-                                data.skills.map(skill => 
-                                    <Tag
-                                        className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
-                                        key={skill}>
-                                        {skill}
-                                    </Tag>
-                                )
-                            }
-                        </div>
                     </div>
 
                     <div className="flex items-center space-x-5">
-                        <div className="flex flex-col space-y-1">
-                            <div className="flex items-center space-x-2">
-                                <i className="pi pi-phone pb-0.5"></i>
-                                <span className="text-primary text-sm font-medium">{data.phone}</span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <i className="pi pi-map-marker pb-0.5"></i>
-                                <span className="text-primary text-sm font-medium">{data.city}</span>
-                            </div>
+                        <div className="flex flex-col space-y-1 min-w-[140px]">
+                            {
+                                data.phone && 
+                                <div className="flex items-center space-x-2">
+                                    <i className="pi pi-phone pb-0.5"></i>
+                                    <span className="text-primary text-sm font-medium">{data.phone}</span>
+                                </div>
+                            }
+                            {
+                                data.city && 
+                                <div className="flex items-center space-x-2">
+                                    <i className="pi pi-map-marker pb-0.5"></i>
+                                    <span className="text-primary text-sm font-medium">{data.city}</span>
+                                </div>
+                            }
+                            
                         </div>
 
                         <div className="flex items-center space-x-2">
@@ -137,36 +122,41 @@ const CvList = (): JSX.Element => {
     return (
         <div className="w-full h-full rounded-md pt-5">
             <span className="text-primary font-medium text-2xl">
-                {`50 ${T('talentsFound')}`}
+                {`${data?.length ?? 0} ${T('talentsFoundForKeyWord')}`} 
+                <span className="text-blue-500 px-1">{query}</span>
             </span>
             <div className="grid grid-cols-1 gap-2">
             {
-                Array<ProfileResponse>(50).fill(DUMMY_DATA).map((data, i) => 
+                data?.map((data, i) => 
                     <Panel
                         key={i}
                         headerTemplate={(opt) => template(opt, data)}
                         collapsed={true}
                         toggleable>
                         <div className="flex flex-col space-y-4 ">
-                            <div className="flex flex-col space-y-1">
+                            <div className="flex flex-col space-y-3">
                                 {
                                     DETAIL_FIELDS.map(field => 
                                         <div
-                                            className="flex flex-col"
+                                            className="flex flex-col space-y-1"
                                             key={field}>
-                                            <span className="text-primary font-medium">{field}</span>
-                                            <span className="text-gray-9 text-sm">{data[field]}</span>
+                                            <span className="text-primary font-medium">
+                                                {T(field)}
+                                            </span>
+                                            <span className="text-gray-9 text-sm">
+                                                {data[field] as string}
+                                            </span>
                                         </div>
                                     )
                                 }
                             </div>
                             <div className="flex flex-wrap">
                                 {
-                                    data.skills.map(skill => 
+                                    data.skill_details.map(skillItem => 
                                         <Tag
                                             className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
-                                            key={skill}>
-                                            {skill}
+                                            key={skillItem.name}>
+                                            {skillItem.name}
                                         </Tag>
                                     )
                                 }
