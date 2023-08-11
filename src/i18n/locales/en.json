@@ -9,7 +9,7 @@
     "downloadCV": "download CV",
     "filters": "filters",
     "talentsFoundForKeyWord": "talents found for keyword",
-    "tf_summary": "self summary",
+    "tf_summary": "summary",
     "thoughtAboutCandidate": "what do you think about this candidate?",
     "noData": "no data",
     "enterYourComment": "enter your comment",
@@ -18,5 +18,6 @@
     "result": "result",
     "fail": "fail",
     "pass": "pass",
-    "submit": "submit"
+    "submit": "submit",
+    "total_experience_in_year": "year of experience"
 }

@@ -9,14 +9,15 @@
     "downloadCV": "tải CV",
     "filters": "lọc",
     "talentsFoundForKeyWord": "ứng viên được tìm thấy cho từ khóa",
-    "tf_summary": "tóm tắt bản thân",
+    "tf_summary": "tóm tắt",
     "thoughtAboutCandidate": "bạn nghĩ gì về ứng viên?",
     "noData": "không tìm thấy dữ liệu",
     "enterYourComment": "nhập nhận xét của bạn",
     "addComment": "thêm nhận xét",
-    "feedback": "nhận set",
+    "feedback": "nhận xét",
     "result": "kết quả",
     "fail": "trượt",
     "pass": "qua",
-    "submit": "gửi"
+    "submit": "gửi",
+    "total_experience_in_year": "năm kinh nghiệm"
 }
