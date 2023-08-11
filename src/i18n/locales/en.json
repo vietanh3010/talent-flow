@@ -19,5 +19,7 @@
     "fail": "fail",
     "pass": "pass",
     "submit": "submit",
-    "total_experience_in_year": "year of experience"
+    "total_experience_in_year": "year of experience",
+    "viewMore": "view more",
+    "data": "data"
 }

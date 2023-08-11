@@ -11,6 +11,7 @@ import { memo, useState } from "react";
 import CvPreviewDialog from "./CvPreviewDialog";
 import { Skeleton } from "primereact/skeleton";
 import _ from "lodash";
+import CvViewMore from "./CvViewMore";
 
 const DETAIL_FIELDS: Array<keyof ProfileResponse> = [
     'tf_summary',
@@ -54,12 +55,11 @@ const CvList = (): JSX.Element => {
                                 <span className="text-primary font-bold text-base mr-2 whitespace-nowrap">
                                     {data.name}
                                 </span>
-                                <div className="flex justify-end items-center space-x-1">
+                                {/* <div className="flex justify-end items-center space-x-1">
                                     <span className="text-secondary text-base font-medium">
-                                        {/* {data.score} */} 4.2
                                     </span>
                                     <i className="pi pi-star-fill pb-0.5 text-sm text-warning-7"></i>
-                                </div>
+                                </div> */}
                             </div>
                             <span className="text-secondary/80 font-medium text-sm">{data.email}</span>
                         </div>
@@ -159,7 +159,7 @@ const CvList = (): JSX.Element => {
                         headerTemplate={(opt) => template(opt, data)}
                         collapsed={true}
                         toggleable>
-                        <div className="flex flex-col space-y-4 ">
+                        <div className="flex flex-col space-y-3">
                             <div className="flex flex-col space-y-3">
                                 {
                                     DETAIL_FIELDS.map(field => 
@@ -176,6 +176,9 @@ const CvList = (): JSX.Element => {
                                     )
                                 }
                             </div>
+
+                            <CvViewMore data={data}/>
+                            
                             <div className="flex flex-wrap">
                                 {
                                     // data.skill_details
@@ -207,7 +210,7 @@ const CvList = (): JSX.Element => {
                                         const experienceInMonthStr = s.slice(pivot + 1, s.indexOf(','));
                                         const experienceInMonth = parseInt(experienceInMonthStr);
 
-                                        return { name, experienceInMonth };
+                                            return { name, experienceInMonth };
                                         })
                                         .sortBy('experienceInMonth')
                                         .reverse()
@@ -217,11 +220,12 @@ const CvList = (): JSX.Element => {
                                         .value()
                                         .map(skill => 
                                             <Tag
+                                               
                                                 className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
                                                 key={skill}>
                                                 {skill}
                                             </Tag>
-                                           )
+                                        )
                                 }
                             </div>
                         </div>
