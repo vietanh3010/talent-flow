@@ -7,10 +7,7 @@ export type ProfileResponse = {
     objective: string,
     phone: string,
     email: string,
-    skill_details: Array<{
-        name: string,
-        exp: number,
-    }>,
+    skill_details: string,
     total_experience_in_year: string,
     url: string,
     id: string,

@@ -17,7 +17,7 @@ export default function useCvService(): ResultCvService {
         const query_string = queries.join(' ');
         const params = Utils.parseObjectToParam({ query_string });
 
-        return httpClient.get<ProfileResponse[]>(`${AppConfig.CV.GET_PROFILES(params)}`);
+        return httpClient.get<Array<{ _source: ProfileResponse }>>(`${AppConfig.CV.GET_PROFILES(params)}`).then(res => res.map(v => v._source));
     }
 
 

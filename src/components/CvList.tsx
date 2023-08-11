@@ -10,6 +10,7 @@ import { Tag } from "primereact/tag";
 import { memo, useState } from "react";
 import CvPreviewDialog from "./CvPreviewDialog";
 import { Skeleton } from "primereact/skeleton";
+import _ from "lodash";
 
 const DETAIL_FIELDS: Array<keyof ProfileResponse> = [
     'tf_summary',
@@ -177,13 +178,50 @@ const CvList = (): JSX.Element => {
                             </div>
                             <div className="flex flex-wrap">
                                 {
-                                    data.skill_details.map(skillItem => 
-                                        <Tag
-                                            className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
-                                            key={skillItem.name}>
-                                            {skillItem.name}
-                                        </Tag>
-                                    )
+                                    // data.skill_details
+                                    // .split(';')
+                                    // .map(skillItem => {
+                                    //     const first = skillItem.indexOf('(');
+                                    //     const second = skillItem.indexOf(')');
+                                    //     const str = skillItem.substring(0, first);
+
+                                    //     retu
+                                        
+                                    // })
+
+                                    // return (
+                                    //     <Tag
+                                    //         className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
+                                    //         key={str}>
+                                    //         {str}
+                                    //     </Tag>
+                                    // )
+
+                                    
+
+                                    _.chain(_.get(data, 'skill_details', ''))
+                                        .split(';')
+                                        .map((s) => {
+                                        const pivot = s.indexOf('(');
+                                        const name = s.slice(0, pivot);
+                                        const experienceInMonthStr = s.slice(pivot + 1, s.indexOf(','));
+                                        const experienceInMonth = parseInt(experienceInMonthStr);
+
+                                        return { name, experienceInMonth };
+                                        })
+                                        .sortBy('experienceInMonth')
+                                        .reverse()
+                                        // .slice(0, NUMBER_OF_SKILLS)
+                                        .map((s) => s.name)
+                                        // .join(', ')
+                                        .value()
+                                        .map(skill => 
+                                            <Tag
+                                                className="bg-slate-200 text-primary font-medium capitalize mr-1 mb-1"
+                                                key={skill}>
+                                                {skill}
+                                            </Tag>
+                                           )
                                 }
                             </div>
                         </div>
